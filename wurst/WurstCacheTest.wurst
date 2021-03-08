@@ -1,0 +1,49 @@
+/// Uncomment to test WurstCache
+package WurstCacheTest
+
+// import ClosureTimers
+// import Knockback3
+// import StandardTextTags
+// import UnitIds
+
+// import WurstCache
+//
+// init
+//     FogEnable(false)
+//     FogMaskEnable(false)
+//     var cache = new Cache<unit>(10, 3., u -> u.remove())
+//     doPeriodicallyCounted(ANIMATION_PERIOD, 120) cb ->
+//         cache.insert(
+//             createUnit(
+//                 players[0],
+//                 UnitIds.footman,
+//                 ZERO2.polarOffset(angle(cb.getCount() * 2. * PI / 30), 700. - cb.getCount()),
+//                 angle(0.)
+//             )..addAbility(LOCUST_ID)
+//         )
+
+//     let tt = standardTextTag(ZERO2, "0")..setLifespan(999.)..setFadepoint(999.)..setVelocity(ZERO2)
+//     doPeriodically(ANIMATION_PERIOD) (CallbackPeriodic cb) ->
+//         tt.setScaledText(cache.size().toString(), 2.)
+
+//     doAfter(120. * ANIMATION_PERIOD + 3. + 1.) ->
+//         cache = new Cache<unit>(9999, 1., u -> u.remove())
+//         let blood_mage = CreateGroup()..enumUnitsInRange(ZERO2, 200.).next()
+//         Knockback3.add(blood_mage, 1800., angle(0.), angle(PI / 8.))
+//         doPeriodically(ANIMATION_PERIOD) (CallbackPeriodic cb) ->
+//             if Knockback3.getVel(blood_mage).length() < 1.0
+//                 cache.invalidate()
+//             else
+//                 let pos = blood_mage.getPos()
+//                 cache.insert(
+//                     createUnit(
+//                         players[0],
+//                         UnitIds.wisp,
+//                         pos,
+//                         angle(0.)
+//                     )..addAbility(HEIGHT_ENABLER)
+//                     ..setXY(pos)
+//                     ..setFlyHeight(blood_mage.getFlyHeight() + 50., 0.)
+//                     ..addAbility(LOCUST_ID)
+//                     ..setColor(PLAYER_COLOR_BLUE)
+//                 )

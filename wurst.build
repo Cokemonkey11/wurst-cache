@@ -1,0 +1,8 @@
+---
+projectName: WurstCache
+dependencies:
+- https://github.com/Cokemonkey11/WurstLinkedHashMap
+- https://github.com/wurstscript/wurstStdlib2
+buildMapData:
+  fileName: _
+  author: Cokemonkey11

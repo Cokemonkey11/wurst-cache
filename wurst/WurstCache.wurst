@@ -1,0 +1,64 @@
+package WurstCache
+
+import GameTimer
+import WurstLinkedHashMap
+
+
+class CacheKey
+    real value
+
+    construct()
+        this.value = getElapsedGameTime()
+
+    function ageSeconds() returns real
+        return getElapsedGameTime() - this.value
+
+
+public interface Invalidator<T>
+    function invalidate(T t)
+
+
+public class Cache<T>
+    int maxSize
+    real maxAge
+    Invalidator<T> invalidator
+    LinkedHashMap<CacheKey, T> backingStore
+
+    construct(int maxSize, real maxAge)
+        this.maxSize = maxSize
+        this.maxAge = maxAge
+        this.backingStore = new LinkedHashMap<CacheKey, T>()
+        this.invalidator = null
+
+    /// Takes ownership of the provided invalidator.
+    construct(int maxSize, real maxAge, Invalidator<T> invalidator)
+        this.maxSize = maxSize
+        this.maxAge = maxAge
+        this.backingStore = new LinkedHashMap<CacheKey, T>()
+        this.invalidator = invalidator
+
+    function insert(T t)
+        this.backingStore.put(new CacheKey(), t)
+        invalidate()
+
+    function size() returns int
+        invalidate()
+        return this.backingStore.size()
+
+    function iterator() returns LHMIterator<CacheKey, T>
+        invalidate()
+        return this.backingStore.iterator()
+
+    function invalidate()
+        this.backingStore.removeWhen() (LHMEntry<CacheKey, T> kv) ->
+            var ret = false
+            if kv.key.ageSeconds() > this.maxAge or backingStore.size() > this.maxSize
+                ret = true
+                if not this.invalidator == null
+                    this.invalidator.invalidate(kv.value)
+            return ret
+
+    ondestroy
+        if this.invalidator != null
+            destroy this.invalidator
+        destroy this.backingStore
